@@ -4,33 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>telc Deutsch B1 – Übungstest 1</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#333;min-height:100vh}
-
-/* ── Header ── */
 header{background:#1a1a2e;color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:100}
 .hd-left{display:flex;align-items:center;gap:10px}
 .logo{color:#F5A623;font-weight:800;font-size:1.1rem;white-space:nowrap}
 header p{font-size:.78rem;color:#aaa}
-.timer-badge{display:none;align-items:center;gap:6px;background:#fff1;border:1px solid #F5A623;border-radius:8px;padding:5px 11px;white-space:nowrap}
-.timer-badge .t-icon{font-size:.85rem}
+.timer-badge{display:none;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid #F5A623;border-radius:8px;padding:5px 11px;white-space:nowrap}
 .timer-val{font-size:1rem;font-weight:800;color:#F5A623;font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .timer-badge.warn .timer-val{color:#e67e22}
 .timer-badge.danger{border-color:#C0392B;animation:pulse 1s infinite}
 .timer-badge.danger .timer-val{color:#C0392B}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
-
-/* ── Progress ── */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .prog-wrap{background:#ddd;height:5px}
 .prog-bar{background:#F5A623;height:5px;transition:width .35s}
 .step-lbl{text-align:center;font-size:.76rem;color:#888;padding:6px 12px;background:#fff;border-bottom:1px solid #eee}
-
-/* ── Sections ── */
 .sec{display:none;max-width:700px;margin:0 auto;padding:16px 13px 88px}
 .sec.active{display:block}
-
-/* ── Start ── */
 .start-card{background:#fff;border-radius:14px;padding:28px 20px;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,.08);margin-top:18px}
 .start-card .icon{font-size:2.8rem;margin-bottom:12px}
 .start-card h2{color:#1a1a2e;margin-bottom:5px;font-size:1.25rem}
@@ -39,33 +31,24 @@ header p{font-size:.78rem;color:#aaa}
 .info-item{background:#f8f8f8;border-radius:9px;padding:10px 12px}
 .info-item .lbl{font-size:.7rem;color:#aaa;margin-bottom:3px}
 .info-item .val{font-weight:700;color:#333;font-size:.9rem}
-
-/* ── Kandidat-Formular ── */
 .kand-form{background:#f8f8f8;border-radius:10px;padding:16px;margin-bottom:18px;text-align:left}
-.kand-form h3{font-size:.85rem;font-weight:700;color:#555;margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em}
+.kand-form h3{font-size:.83rem;font-weight:700;color:#555;margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .field-row.full{grid-template-columns:1fr}
 .field label{display:block;font-size:.75rem;color:#888;margin-bottom:4px;font-weight:600}
 .field input{width:100%;border:2px solid #ddd;border-radius:7px;padding:9px 11px;font-size:.92rem;font-family:inherit;transition:border-color .2s;background:#fff}
 .field input:focus{outline:none;border-color:#F5A623}
 .field input.err{border-color:#C0392B}
-.err-msg{font-size:.75rem;color:#C0392B;margin-top:5px;display:none}
-
+.err-msg{font-size:.75rem;color:#C0392B;margin-top:4px;display:none}
 .hint{font-size:.78rem;color:#aaa;line-height:1.5}
-
-/* ── Cards ── */
 .card{background:#fff;border-radius:12px;padding:17px;margin-bottom:13px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .sec-title{font-size:1.02rem;font-weight:700;color:#C0392B;margin-bottom:3px}
 .sec-sub{font-size:.8rem;color:#888;margin-bottom:13px}
 .instruct{background:#fff8e1;border-left:4px solid #F5A623;border-radius:0 8px 8px 0;padding:12px;font-size:.86rem;line-height:1.65;color:#555;margin-bottom:13px}
-
-/* ── Audio ── */
 .audio-wrap{background:#1a1a2e;border-radius:10px;padding:12px 14px;margin-bottom:13px}
 .audio-lbl{color:#F5A623;font-size:.76rem;font-weight:700;margin-bottom:7px}
 audio{width:100%;height:36px}
 .audio-note{color:#999;font-size:.72rem;margin-top:5px}
-
-/* ── Questions ── */
 .q-item{border-bottom:1px solid #f0f0f0;padding:14px 0}
 .q-item:last-child{border-bottom:none}
 .q-num{font-size:.7rem;color:#F5A623;font-weight:700;margin-bottom:3px}
@@ -75,8 +58,6 @@ audio{width:100%;height:36px}
 .rf-btn.r{color:#27ae60}.rf-btn.f{color:#C0392B}
 .rf-btn.sel-r{background:#27ae60;color:#fff;border-color:#27ae60}
 .rf-btn.sel-f{background:#C0392B;color:#fff;border-color:#C0392B}
-
-/* ── Schriftlicher Ausdruck ── */
 .email-box{background:#f9f9f9;border:1px solid #ddd;border-radius:9px;padding:14px;font-size:.87rem;line-height:1.65;color:#444;font-style:italic;margin-bottom:13px}
 .email-box b{font-style:normal}
 .bullet-list{margin:0 0 13px;padding-left:0}
@@ -86,80 +67,50 @@ textarea{width:100%;min-height:200px;border:2px solid #ddd;border-radius:9px;pad
 textarea:focus{outline:none;border-color:#F5A623}
 .wc-row{text-align:right;font-size:.76rem;color:#888;margin-top:5px}
 .wc-row span{font-weight:700}
-.ok{color:#27ae60}.warn-c{color:#e67e22}.low{color:#C0392B}
-
-/* ── Results ── */
+.c-ok{color:#27ae60}.c-warn{color:#e67e22}.c-low{color:#C0392B}
 .kand-info-bar{background:#1a1a2e;border-radius:9px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.85rem}
 .kand-info-bar .ki-name{color:#F5A623;font-weight:700}
 .kand-info-bar .ki-date{color:#aaa}
-
 .score-circle{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#F5A623,#d4870e);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 20px rgba(245,166,35,.35)}
 .s-num{font-size:2rem;font-weight:800;color:#fff;line-height:1}
 .s-of{font-size:.7rem;color:rgba(255,255,255,.8)}
 .res-lbl{text-align:center;font-size:1.1rem;font-weight:700;margin-bottom:16px}
 .passed{color:#27ae60}.failed{color:#C0392B}
-
 .breakdown{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
 .bd-row{display:flex;justify-content:space-between;align-items:center;background:#f8f8f8;border-radius:8px;padding:10px 14px}
 .bd-lbl{font-size:.87rem;color:#555}
 .bd-sc{font-weight:700;font-size:.97rem}
 .bd-sc.ok{color:#27ae60}.bd-sc.low{color:#C0392B}
-
 .review-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin-top:9px}
 .rv{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:7px;font-size:.81rem}
 .rv.c{background:#e8f8f0}.rv.w{background:#fde8e8}
 .rv-n{font-weight:700;min-width:25px}
-
 .muster-btn{background:none;border:2px solid #F5A623;border-radius:8px;padding:9px 16px;color:#F5A623;font-weight:700;cursor:pointer;width:100%;margin-top:10px;font-size:.87rem;transition:all .18s}
 .muster-btn:hover{background:#F5A623;color:#fff}
 .muster-box{display:none;background:#fff8e1;border-radius:8px;padding:14px;margin-top:10px;font-size:.87rem;line-height:1.75;color:#444;white-space:pre-line}
 .muster-box.show{display:block}
-
-/* ── Timer-Overlay (Zeit abgelaufen) ── */
+.pdf-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a1a2e;color:#fff;border:none;border-radius:9px;padding:13px;font-size:.93rem;font-weight:700;cursor:pointer;width:100%;margin-bottom:14px;transition:background .2s}
+.pdf-btn:hover{background:#2d2d4e}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center}
 .overlay.show{display:flex}
 .overlay-box{background:#fff;border-radius:14px;padding:28px 24px;text-align:center;max-width:320px;margin:0 16px}
 .overlay-box h2{color:#C0392B;margin-bottom:10px}
 .overlay-box p{color:#555;font-size:.9rem;margin-bottom:20px;line-height:1.5}
-
-/* ── Nav ── */
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:700px;background:#fff;border-top:1px solid #eee;padding:10px 13px;display:flex;gap:8px;z-index:99}
 .btn{flex:1;padding:13px;border:none;border-radius:9px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s}
 .btn-red{background:#C0392B;color:#fff}.btn-red:hover{background:#a93226}
 .btn-grey{background:#efefef;color:#555}.btn-grey:hover{background:#e0e0e0}
 .btn-gold{background:#F5A623;color:#fff}.btn-gold:hover{background:#d4870e}
 .btn:disabled{opacity:.35;cursor:not-allowed}
-
-@media(max-width:420px){
-  header p{display:none}
-  .field-row{grid-template-columns:1fr}
-}
-
-/* ── Print / PDF ── */
-.pdf-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a1a2e;color:#fff;border:none;border-radius:9px;padding:13px;font-size:.93rem;font-weight:700;cursor:pointer;width:100%;margin-bottom:14px;transition:background .2s}
-.pdf-btn:hover{background:#2d2d4e}
-
-@media print{
-  header,.prog-wrap,.step-lbl,.nav,.pdf-btn,.muster-btn,
-  .audio-wrap,.instruct{display:none!important}
-  body{background:#fff}
-  .sec{display:none!important;padding:0}
-  #s5{display:block!important}
-  .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
-  .kand-info-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .score-circle{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .rv.c,.rv.w,.bd-row{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .muster-box{display:block!important}
-}
+@media(max-width:420px){header p{display:none}.field-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- Timer-Overlay -->
 <div class="overlay" id="timeOverlay">
   <div class="overlay-box">
     <h2>⏰ Zeit abgelaufen!</h2>
-    <p>Die 60 Minuten sind um. Sie können Ihren Test jetzt auswerten oder noch Antworten ergänzen.</p>
+    <p>Die 60 Minuten sind um. Sie können den Test jetzt auswerten.</p>
     <button class="btn btn-red" style="width:100%" onclick="document.getElementById('timeOverlay').classList.remove('show')">Weiter</button>
   </div>
 </div>
@@ -170,28 +121,25 @@ textarea:focus{outline:none;border-color:#F5A623}
     <p>telc Deutsch B1 – Übungstest 1</p>
   </div>
   <div class="timer-badge" id="timerBadge">
-    <span class="t-icon">⏱</span>
+    <span>⏱</span>
     <span class="timer-val" id="timerVal">60:00</span>
   </div>
 </header>
-
 <div class="prog-wrap"><div class="prog-bar" id="prog" style="width:0%"></div></div>
 <div class="step-lbl" id="stepLbl">Startseite</div>
 
-<!-- 0: START / KANDIDATENDATEN -->
+<!-- 0: START -->
 <div class="sec active" id="s0">
   <div class="start-card">
     <div class="icon">🎧</div>
     <h2>telc Deutsch B1 – Teil 2</h2>
     <p class="start-sub">Übungstest 1 &nbsp;·&nbsp; Hörverstehen &amp; Schriftlicher Ausdruck</p>
-
-    <!-- Kandidatendaten -->
     <div class="kand-form">
       <h3>📋 Kandidatendaten</h3>
       <div class="field-row full">
         <div class="field">
           <label for="fName">Name, Vorname</label>
-          <input type="text" id="fName" placeholder="z. B. Müller, Anna" autocomplete="name">
+          <input type="text" id="fName" placeholder="z. B. Müller, Anna">
           <div class="err-msg" id="errName">Bitte geben Sie Ihren Namen ein.</div>
         </div>
       </div>
@@ -207,7 +155,6 @@ textarea:focus{outline:none;border-color:#F5A623}
         </div>
       </div>
     </div>
-
     <div class="info-grid">
       <div class="info-item"><div class="lbl">⏱ Hörverstehen</div><div class="val">ca. 30 Min.</div></div>
       <div class="info-item"><div class="lbl">✍️ Schriftl. Ausdruck</div><div class="val">ca. 30 Min.</div></div>
@@ -229,9 +176,12 @@ textarea:focus{outline:none;border-color:#F5A623}
       Lesen Sie jetzt die Aufgaben. Sie haben dazu <strong>30 Sekunden Zeit</strong>.
     </div>
     <div class="audio-wrap">
-      <div class="audio-lbl">🔊 Audio – Hörverstehen (Teil 1)</div>
-      <audio controls><source src="telc_deutsch_b1_zd_uebungstest_4.mp3" type="audio/mpeg">Ihr Browser unterstützt kein Audio.</audio>
-      <div class="audio-note">⚠️ Diesen Abschnitt <strong>nur einmal</strong> hören.</div>
+      <div class="audio-lbl">🔊 Hörverstehen – Teil 1</div>
+      <audio controls preload="auto">
+        <source src="telc_b1_hoerverstehen_teil_1.mp3" type="audio/mpeg">
+        Ihr Browser unterstützt kein Audio.
+      </audio>
+      <div class="audio-note">⚠️ Diesen Teil <strong>nur einmal</strong> hören.</div>
     </div>
     <div id="q1"></div>
   </div>
@@ -248,9 +198,12 @@ textarea:focus{outline:none;border-color:#F5A623}
       Lesen Sie jetzt die Aufgaben. Sie haben dazu <strong>eine Minute Zeit</strong>.
     </div>
     <div class="audio-wrap">
-      <div class="audio-lbl">🔊 Audio – Hörverstehen (Teil 2)</div>
-      <audio controls><source src="telc_deutsch_b1_zd_uebungstest_4.mp3" type="audio/mpeg">Ihr Browser unterstützt kein Audio.</audio>
-      <div class="audio-note">ℹ️ Diesen Abschnitt <strong>zweimal</strong> hören.</div>
+      <div class="audio-lbl">🔊 Hörverstehen – Teil 2</div>
+      <audio controls preload="auto">
+        <source src="telc_b1_hoerverstehen_teil_2.mp3" type="audio/mpeg">
+        Ihr Browser unterstützt kein Audio.
+      </audio>
+      <div class="audio-note">ℹ️ Diesen Teil <strong>zweimal</strong> hören.</div>
     </div>
     <div id="q2"></div>
   </div>
@@ -266,8 +219,11 @@ textarea:focus{outline:none;border-color:#F5A623}
       Entscheiden Sie beim Hören, ob die Aussagen 56–60 <strong>richtig (+)</strong> oder <strong>falsch (–)</strong> sind.
     </div>
     <div class="audio-wrap">
-      <div class="audio-lbl">🔊 Audio – Hörverstehen (Teil 3)</div>
-      <audio controls><source src="telc_deutsch_b1_zd_uebungstest_4.mp3" type="audio/mpeg">Ihr Browser unterstützt kein Audio.</audio>
+      <div class="audio-lbl">🔊 Hörverstehen – Teil 3</div>
+      <audio controls preload="auto">
+        <source src="telc_b1_hoerverstehen_teil_3.mp3" type="audio/mpeg">
+        Ihr Browser unterstützt kein Audio.
+      </audio>
       <div class="audio-note">ℹ️ Jeden Text <strong>zweimal</strong> hören.</div>
     </div>
     <div id="q3"></div>
@@ -280,8 +236,7 @@ textarea:focus{outline:none;border-color:#F5A623}
     <div class="sec-title">Schriftlicher Ausdruck</div>
     <div class="sec-sub">⏱ Ca. 30 Minuten &nbsp;·&nbsp; ca. 80–100 Wörter</div>
     <div class="instruct">
-      Sie haben von einer Freundin folgende E-Mail erhalten. Antworten Sie auf die E-Mail.<br>
-      Schreiben Sie etwas zu <strong>allen vier Punkten</strong>. Überlegen Sie sich einen passenden Betreff, eine Anrede, eine Einleitung und einen passenden Schluss.
+      Sie haben von einer Freundin folgende E-Mail erhalten. Antworten Sie auf die E-Mail und schreiben Sie etwas zu <strong>allen vier Punkten</strong>.
     </div>
     <div class="email-box">
       <b>Von: Marianne</b><br><br>
@@ -300,13 +255,13 @@ textarea:focus{outline:none;border-color:#F5A623}
     </ul>
     <label style="display:block;font-weight:700;margin-bottom:7px;font-size:.88rem" for="essay">✍️ Ihre Antwort:</label>
     <textarea id="essay" placeholder="Schreiben Sie hier Ihre Antwort (ca. 80–100 Wörter)…" oninput="wcUpdate()"></textarea>
-    <div class="wc-row">Wörter: <span id="wc" class="low">0</span> &nbsp;/&nbsp; Ziel: 80–100</div>
+    <div class="wc-row">Wörter: <span id="wc" class="c-low">0</span> &nbsp;/&nbsp; Ziel: 80–100</div>
   </div>
 </div>
 
 <!-- 5: ERGEBNISSE -->
 <div class="sec" id="s5">
-  <button class="pdf-btn" onclick="window.print()">⬇️ Ergebnisse als PDF herunterladen</button>
+  <button class="pdf-btn" onclick="downloadPDF()">⬇️ Ergebnisse als PDF herunterladen</button>
   <div class="kand-info-bar">
     <span class="ki-name" id="kiName">–</span>
     <span class="ki-date" id="kiDate">–</span>
@@ -345,17 +300,15 @@ Herzliche Grüße,
   </div>
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <button class="btn btn-grey" id="btnB" onclick="go(-1)" disabled>← Zurück</button>
-  <button class="btn btn-red"  id="btnN" onclick="go(1)">Weiter →</button>
+  <button class="btn btn-red" id="btnN">Weiter →</button>
 </div>
 
 <script>
-/* ─── Data ─── */
-const SECS = 6;
-const LABELS = ['Start','Hörverstehen – Teil 1','Hörverstehen – Teil 2','Hörverstehen – Teil 3','Schriftlicher Ausdruck','Ergebnisse'];
-const QS = {
+const SECS=6;
+const LABELS=['Start','Hörverstehen – Teil 1','Hörverstehen – Teil 2','Hörverstehen – Teil 3','Schriftlicher Ausdruck','Ergebnisse'];
+const QS={
   1:[
     {n:41,t:'Die Sprecherin muss im Haushalt fast alles alleine machen.'},
     {n:42,t:'Der Sprecher wäscht das Geschirr und die Wäsche.'},
@@ -383,44 +336,38 @@ const QS = {
     {n:60,t:'Damenröcke kosten heute 39 Euro.'}
   ]
 };
-const SOL = {41:'+',42:'-',43:'-',44:'+',45:'-',46:'+',47:'+',48:'-',49:'-',50:'-',51:'+',52:'+',53:'-',54:'-',55:'+',56:'+',57:'-',58:'+',59:'-',60:'+'};
-const ua = {};
-let cur = 0;
+const SOL={41:'+',42:'-',43:'-',44:'+',45:'-',46:'+',47:'+',48:'-',49:'-',50:'-',51:'+',52:'+',53:'-',54:'-',55:'+',56:'+',57:'-',58:'+',59:'-',60:'+'};
+const ua={};
+let cur=0, timerSecs=3600, timerInt=null;
 
-/* ─── Timer ─── */
-let timerSecs = 60 * 60, timerInt = null;
-function startTimer() {
-  const badge = document.getElementById('timerBadge');
-  badge.style.display = 'flex';
-  timerInt = setInterval(() => {
+/* ── Timer ── */
+function startTimer(){
+  const badge=document.getElementById('timerBadge');
+  badge.style.display='flex';
+  timerInt=setInterval(()=>{
     timerSecs--;
-    const m = Math.floor(timerSecs / 60), s = timerSecs % 60;
-    document.getElementById('timerVal').textContent =
-      String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-    badge.className = 'timer-badge' + (timerSecs <= 300 ? ' danger' : timerSecs <= 600 ? ' warn' : '');
-    if (timerSecs <= 0) {
-      clearInterval(timerInt);
-      document.getElementById('timeOverlay').classList.add('show');
-    }
-  }, 1000);
+    const m=Math.floor(timerSecs/60),s=timerSecs%60;
+    document.getElementById('timerVal').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    badge.className='timer-badge'+(timerSecs<=300?' danger':timerSecs<=600?' warn':'');
+    if(timerSecs<=0){clearInterval(timerInt);document.getElementById('timeOverlay').classList.add('show');}
+  },1000);
 }
 
-/* ─── Validation ─── */
-function validateStart() {
-  const n = document.getElementById('fName').value.trim();
-  const d = document.getElementById('fDate').value;
-  let ok = true;
-  document.getElementById('fName').classList.toggle('err', !n);
-  document.getElementById('errName').style.display = n ? 'none' : 'block';
-  document.getElementById('fDate').classList.toggle('err', !d);
-  document.getElementById('errDate').style.display = d ? 'none' : 'block';
-  return n && d;
+/* ── Validation ── */
+function validateStart(){
+  const n=document.getElementById('fName').value.trim();
+  const d=document.getElementById('fDate').value;
+  document.getElementById('fName').classList.toggle('err',!n);
+  document.getElementById('errName').style.display=n?'none':'block';
+  document.getElementById('fDate').classList.toggle('err',!d);
+  document.getElementById('errDate').style.display=d?'none':'block';
+  return n&&d;
 }
 
-/* ─── Build questions ─── */
-function buildQs() {
-  [1,2,3].forEach(p => {
-    document.getElementById('q'+p).innerHTML = QS[p].map(q => `
+/* ── Build questions ── */
+function buildQs(){
+  [1,2,3].forEach(p=>{
+    document.getElementById('q'+p).innerHTML=QS[p].map(q=>`
       <div class="q-item">
         <div class="q-num">Aufgabe ${q.n}</div>
         <div class="q-txt">${q.t}</div>
@@ -432,117 +379,192 @@ function buildQs() {
   });
 }
 
-function pick(n, v) {
-  ua[n] = v;
-  document.getElementById('r'+n+'p').className = 'rf-btn r' + (v==='+'?' sel-r':'');
-  document.getElementById('r'+n+'m').className = 'rf-btn f' + (v==='-'?' sel-f':'');
+function pick(n,v){
+  ua[n]=v;
+  document.getElementById('r'+n+'p').className='rf-btn r'+(v==='+'?' sel-r':'');
+  document.getElementById('r'+n+'m').className='rf-btn f'+(v==='-'?' sel-f':'');
 }
 
-function wcUpdate() {
-  const w = document.getElementById('essay').value.trim();
-  const c = w ? w.split(/\s+/).length : 0;
-  const el = document.getElementById('wc');
-  el.textContent = c;
-  el.className = c>=80&&c<=120?'ok':c>=60?'warn-c':'low';
+function wcUpdate(){
+  const w=document.getElementById('essay').value.trim();
+  const c=w?w.split(/\s+/).length:0;
+  const el=document.getElementById('wc');
+  el.textContent=c;
+  el.className=c>=80&&c<=120?'c-ok':c>=60?'c-warn':'c-low';
 }
 
-function toggleMuster() {
-  const b = document.getElementById('musterBox');
+function toggleMuster(){
+  const b=document.getElementById('musterBox');
   b.classList.toggle('show');
-  document.querySelector('.muster-btn').textContent =
-    b.classList.contains('show') ? '📄 Musterantwort ausblenden' : '📄 Musterantwort anzeigen';
+  document.querySelector('.muster-btn').textContent=b.classList.contains('show')?'📄 Musterantwort ausblenden':'📄 Musterantwort anzeigen';
 }
 
-/* ─── Results ─── */
-function calcResults() {
-  const name = document.getElementById('fName').value.trim();
-  const date = document.getElementById('fDate').value;
-  const kurs = document.getElementById('fKurs').value.trim();
-  document.getElementById('kiName').textContent = name + (kurs ? ' · ' + kurs : '');
-  document.getElementById('kiDate').textContent = date
-    ? new Date(date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}) : '';
+/* ── Results ── */
+let lastTotal=0, lastP1=0, lastP2=0, lastP3=0;
+function calcResults(){
+  const name=document.getElementById('fName').value.trim();
+  const date=document.getElementById('fDate').value;
+  const kurs=document.getElementById('fKurs').value.trim();
+  document.getElementById('kiName').textContent=name+(kurs?' · '+kurs:'');
+  document.getElementById('kiDate').textContent=date?new Date(date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'';
+  const nums=Object.keys(SOL).map(Number);
+  let total=0,p1=0,p2=0,p3=0;
+  nums.forEach(n=>{const ok=ua[n]===SOL[n];if(ok){total++;n<=45?p1++:n<=55?p2++:p3++;}});
+  lastTotal=total;lastP1=p1;lastP2=p2;lastP3=p3;
+  const pass=total>=12;
+  document.getElementById('sNum').textContent=total;
+  document.getElementById('resLbl').innerHTML=pass?'<span class="passed">✅ Bestanden (≥ 12 / 20)</span>':'<span class="failed">❌ Nicht bestanden (&lt; 12 / 20)</span>';
+  document.getElementById('bd').innerHTML=[
+    ['🎧 HV Teil 1 (41–45)',p1,5,3],
+    ['🎧 HV Teil 2 (46–55)',p2,10,6],
+    ['🎧 HV Teil 3 (56–60)',p3,5,3],
+    ['<strong>Gesamt Hörverstehen</strong>',total,20,12]
+  ].map(([l,s,m,t])=>`<div class="bd-row"><span class="bd-lbl">${l}</span><span class="bd-sc ${s>=t?'ok':'low'}">${s} / ${m}</span></div>`).join('');
+  document.getElementById('rvGrid').innerHTML='<div class="review-grid">'+
+    nums.map(n=>{const a=ua[n]||'–',ok=a===SOL[n];
+      return`<div class="rv ${ok?'c':'w'}"><span class="rv-n">${n}</span><span>${ok?'✅':'❌'}</span><span style="font-size:.76rem;color:#777">Sie: <b>${a}</b> · Lsg: <b>${SOL[n]}</b></span></div>`;
+    }).join('')+'</div>';
+  const txt=document.getElementById('essay').value.trim();
+  const wc=txt?txt.split(/\s+/).length:0;
+  document.getElementById('essaySummary').textContent=txt?`Ihre Antwort (${wc} Wörter):\n\n${txt}`:'Keine Antwort eingegeben.';
+}
 
-  const nums = Object.keys(SOL).map(Number);
-  let total=0, p1=0, p2=0, p3=0;
-  nums.forEach(n => {
-    const ok = ua[n]===SOL[n];
-    if(ok){ total++; n<=45?p1++:n<=55?p2++:p3++; }
+/* ── PDF Download ── */
+function downloadPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF();
+  const name=document.getElementById('fName').value.trim()||'–';
+  const date=document.getElementById('fDate').value;
+  const kurs=document.getElementById('fKurs').value.trim();
+  const dateStr=date?new Date(date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'–';
+  const pass=lastTotal>=12;
+
+  // Header
+  doc.setFillColor(26,26,46);
+  doc.rect(0,0,210,28,'F');
+  doc.setTextColor(245,166,35);
+  doc.setFontSize(14);doc.setFont('helvetica','bold');
+  doc.text('DeutschPro',14,11);
+  doc.setTextColor(200,200,200);
+  doc.setFontSize(9);doc.setFont('helvetica','normal');
+  doc.text('telc Deutsch B1 – Übungstest 1 | Hörverstehen & Schriftlicher Ausdruck',14,19);
+
+  // Kandidatendaten
+  doc.setTextColor(50,50,50);
+  doc.setFontSize(10);doc.setFont('helvetica','bold');
+  doc.text('Kandidatendaten',14,38);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);
+  doc.text(`Name:   ${name}`,14,46);
+  doc.text(`Datum:  ${dateStr}`,14,53);
+  if(kurs) doc.text(`Kurs:   ${kurs}`,14,60);
+
+  // Score box
+  const scoreY=kurs?68:62;
+  doc.setFillColor(pass?39:192, pass?174:57, pass?96:43);
+  doc.roundedRect(14,scoreY,182,20,3,3,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(13);doc.setFont('helvetica','bold');
+  doc.text(`Gesamtergebnis Hörverstehen: ${lastTotal} / 20 Punkte  –  ${pass?'BESTANDEN':'NICHT BESTANDEN'}`,14+4,scoreY+13);
+
+  // Breakdown
+  let y=scoreY+30;
+  doc.setTextColor(50,50,50);
+  doc.setFontSize(10);doc.setFont('helvetica','bold');
+  doc.text('Auswertung nach Teilen',14,y);y+=7;
+  [['HV Teil 1 (Aufg. 41–45)',lastP1,5,3],['HV Teil 2 (Aufg. 46–55)',lastP2,10,6],['HV Teil 3 (Aufg. 56–60)',lastP3,5,3]].forEach(([l,s,m,t])=>{
+    const ok=s>=t;
+    doc.setFillColor(ok?232:253,ok?248:232,ok?240:232);
+    doc.roundedRect(14,y,182,8,2,2,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(10);
+    doc.setTextColor(50,50,50);doc.text(l,18,y+5.5);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(ok?39:192,ok?174:57,ok?96:43);
+    doc.text(`${s} / ${m}`,175,y+5.5,'right');
+    y+=10;
   });
-  const pass = total >= 12;
-  document.getElementById('sNum').textContent = total;
-  document.getElementById('resLbl').innerHTML = pass
-    ? '<span class="passed">✅ Bestanden (≥ 12 / 20)</span>'
-    : '<span class="failed">❌ Nicht bestanden (&lt; 12 / 20)</span>';
-  document.getElementById('bd').innerHTML = [
-    ['🎧 HV Teil 1 (41–45)', p1, 5, 3],
-    ['🎧 HV Teil 2 (46–55)', p2, 10, 6],
-    ['🎧 HV Teil 3 (56–60)', p3, 5, 3],
-    ['<strong>Gesamt Hörverstehen</strong>', total, 20, 12]
-  ].map(([l,s,m,t]) => `
-    <div class="bd-row">
-      <span class="bd-lbl">${l}</span>
-      <span class="bd-sc ${s>=t?'ok':'low'}">${s} / ${m}</span>
-    </div>`).join('');
-  document.getElementById('rvGrid').innerHTML = '<div class="review-grid">' +
-    nums.map(n => {
-      const a = ua[n]||'–', ok = a===SOL[n];
-      return `<div class="rv ${ok?'c':'w'}">
-        <span class="rv-n">${n}</span><span>${ok?'✅':'❌'}</span>
-        <span style="font-size:.76rem;color:#777">Sie: <b>${a}</b> · Lsg: <b>${SOL[n]}</b></span></div>`;
-    }).join('') + '</div>';
-  const txt = document.getElementById('essay').value.trim();
-  const wc  = txt ? txt.split(/\s+/).length : 0;
-  document.getElementById('essaySummary').textContent =
-    txt ? `Ihre Antwort (${wc} Wörter):\n\n${txt}` : 'Keine Antwort eingegeben.';
+
+  // Detail grid
+  y+=5;
+  doc.setTextColor(50,50,50);doc.setFont('helvetica','bold');doc.setFontSize(10);
+  doc.text('Detailauswertung',14,y);y+=7;
+  const nums=Object.keys(SOL).map(Number);
+  let col=0;
+  nums.forEach((n,i)=>{
+    const a=ua[n]||'–',ok=a===SOL[n];
+    const x=14+(col*62);
+    doc.setFillColor(ok?232:253,ok?248:232,ok?240:232);
+    doc.roundedRect(x,y,58,7,1,1,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(8);
+    doc.setTextColor(50,50,50);
+    doc.text(`${n}: Sie ${a} | Lsg ${SOL[n]}  ${ok?'✓':'✗'}`,x+2,y+5);
+    col++;
+    if(col===3){col=0;y+=9;}
+  });
+  if(col>0) y+=9;
+
+  // Essay
+  y+=5;
+  doc.setTextColor(50,50,50);doc.setFont('helvetica','bold');doc.setFontSize(10);
+  doc.text('Schriftlicher Ausdruck',14,y);y+=6;
+  const txt=document.getElementById('essay').value.trim();
+  const wc=txt?txt.split(/\s+/).length:0;
+  doc.setFont('helvetica','normal');doc.setFontSize(9);
+  doc.setTextColor(100,100,100);
+  doc.text('(Wird von der Lehrkraft bewertet)',14,y);y+=6;
+  if(txt){
+    const lines=doc.splitTextToSize(`Antwort (${wc} Wörter):\n${txt}`,182);
+    doc.setTextColor(50,50,50);
+    if(y+lines.length*5>280){doc.addPage();y=20;}
+    doc.text(lines,14,y);
+  }
+
+  // Footer
+  const pgCount=doc.getNumberOfPages();
+  for(let i=1;i<=pgCount;i++){
+    doc.setPage(i);
+    doc.setFontSize(8);doc.setTextColor(180,180,180);
+    doc.text(`DeutschPro · telc Deutsch B1 Übungstest 1 · Seite ${i}/${pgCount}`,105,292,'center');
+  }
+
+  doc.save(`telc_B1_Ergebnisse_${name.replace(/[^a-zA-Z0-9]/g,'_')}.pdf`);
 }
 
-/* ─── Navigation ─── */
-function go(d) {
-  if (cur === 0 && d === 1) {
-    if (!validateStart()) return;
-    startTimer();
-  }
-  const nxt = cur + d;
-  if (nxt < 0 || nxt >= SECS) return;
+/* ── Navigation ── */
+function go(d){
+  if(cur===0&&d===1){if(!validateStart())return;startTimer();}
+  const nxt=cur+d;
+  if(nxt<0||nxt>=SECS)return;
   document.getElementById('s'+cur).classList.remove('active');
-  cur = nxt;
+  cur=nxt;
   document.getElementById('s'+cur).classList.add('active');
-  if (cur === SECS-1) { clearInterval(timerInt); calcResults(); }
-  document.getElementById('prog').style.width = (cur/(SECS-1)*100)+'%';
-  document.getElementById('stepLbl').textContent = `${cur+1} / ${SECS} – ${LABELS[cur]}`;
-  document.getElementById('btnB').disabled = cur === 0;
-  const nb = document.getElementById('btnN');
-  if (cur === SECS-2) { nb.textContent='📊 Auswerten →'; nb.className='btn btn-gold'; }
-  else if (cur === SECS-1) { nb.textContent='🔄 Neu starten'; nb.className='btn btn-gold'; nb.onclick=restart; }
-  else { nb.textContent='Weiter →'; nb.className='btn btn-red'; nb.onclick=()=>go(1); }
+  if(cur===SECS-1){clearInterval(timerInt);calcResults();}
+  document.getElementById('prog').style.width=(cur/(SECS-1)*100)+'%';
+  document.getElementById('stepLbl').textContent=`${cur+1} / ${SECS} – ${LABELS[cur]}`;
+  document.getElementById('btnB').disabled=cur===0;
+  const nb=document.getElementById('btnN');
+  nb.onclick=cur===SECS-1?restart:()=>go(1);
+  nb.textContent=cur===SECS-2?'📊 Auswerten →':cur===SECS-1?'🔄 Neu starten':'Weiter →';
+  nb.className='btn '+(cur===SECS-1?'btn-gold':cur===SECS-2?'btn-gold':'btn-red');
   window.scrollTo(0,0);
 }
 
-function restart() {
-  clearInterval(timerInt);
-  timerSecs = 60*60;
-  document.getElementById('timerVal').textContent = '60:00';
-  document.getElementById('timerBadge').className = 'timer-badge';
-  document.getElementById('timerBadge').style.display = 'none';
+function restart(){
+  clearInterval(timerInt);timerSecs=3600;
+  document.getElementById('timerVal').textContent='60:00';
+  document.getElementById('timerBadge').style.display='none';
+  document.getElementById('timerBadge').className='timer-badge';
   Object.keys(ua).forEach(k=>delete ua[k]);
-  ['fName','fDate','fKurs','essay'].forEach(id => document.getElementById(id).value='');
+  ['fName','fDate','fKurs','essay'].forEach(id=>document.getElementById(id).value='');
   wcUpdate();
-  document.querySelectorAll('.rf-btn').forEach(b => {
-    b.className = b.classList.contains('r') ? 'rf-btn r' : 'rf-btn f';
-  });
+  document.querySelectorAll('.rf-btn').forEach(b=>{b.className=b.classList.contains('r')?'rf-btn r':'rf-btn f';});
   document.getElementById('musterBox').classList.remove('show');
   document.querySelector('.muster-btn').textContent='📄 Musterantwort anzeigen';
-  cur=1; go(-1);
-  const nb=document.getElementById('btnN');
-  nb.textContent='Weiter →'; nb.className='btn btn-red'; nb.onclick=()=>go(1);
+  cur=1;go(-1);
 }
 
-/* ─── Init ─── */
 buildQs();
-document.getElementById('btnN').onclick = ()=>go(1);
-
-// Set today's date as default
-document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+document.getElementById('btnN').onclick=()=>go(1);
+document.getElementById('fDate').value=new Date().toISOString().split('T')[0];
 </script>
 </body>
 </html>
