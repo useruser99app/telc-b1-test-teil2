@@ -134,6 +134,23 @@ textarea:focus{outline:none;border-color:#F5A623}
   header p{display:none}
   .field-row{grid-template-columns:1fr}
 }
+
+/* ── Print / PDF ── */
+.pdf-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:#1a1a2e;color:#fff;border:none;border-radius:9px;padding:13px;font-size:.93rem;font-weight:700;cursor:pointer;width:100%;margin-bottom:14px;transition:background .2s}
+.pdf-btn:hover{background:#2d2d4e}
+
+@media print{
+  header,.prog-wrap,.step-lbl,.nav,.pdf-btn,.muster-btn,
+  .audio-wrap,.instruct{display:none!important}
+  body{background:#fff}
+  .sec{display:none!important;padding:0}
+  #s5{display:block!important}
+  .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+  .kand-info-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .score-circle{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rv.c,.rv.w,.bd-row{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .muster-box{display:block!important}
+}
 </style>
 </head>
 <body>
@@ -289,6 +306,7 @@ textarea:focus{outline:none;border-color:#F5A623}
 
 <!-- 5: ERGEBNISSE -->
 <div class="sec" id="s5">
+  <button class="pdf-btn" onclick="window.print()">⬇️ Ergebnisse als PDF herunterladen</button>
   <div class="kand-info-bar">
     <span class="ki-name" id="kiName">–</span>
     <span class="ki-date" id="kiDate">–</span>
